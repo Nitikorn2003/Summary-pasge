@@ -47,13 +47,16 @@ function render() {
     // Entry rows
     entries.forEach((entry, i) => {
       totalItems++;
-      const winAmount = entry.amount * sec.rate;
+      // ใช้ค่าที่กำหนดมาจากหน้าเพิ่มรายการ (ถ้าไม่มีค่อยใช้ค่ามาตรฐาน)
+      const currentRate = entry.rate || sec.rate;
+      const winAmount = entry.amount * currentRate;
+
       html += `
       <div class="entry-row ${sec.rowClass}">
         <span class="col-idx">${i + 1}.</span>
         <span class="col-num"><span class="highlight-number">${entry.number}</span></span>
         <input type="number" class="form-control form-control-sm normal-input input-amount" value="${entry.amount}" min="1" onchange="updateAmount('${sec.id}',${i},this.value)">
-        <span class="col-rate">${sec.rate.toFixed(2)}</span>
+        <span class="col-rate">${currentRate.toFixed(2)}</span>
         <span class="col-win">
           <input type="text" class="form-control form-control-sm normal-input" value="${winAmount}฿" readonly>
         </span>
