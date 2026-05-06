@@ -54,9 +54,9 @@ function render() {
       html += `
       <div class="entry-row ${sec.rowClass}">
         <span class="col-idx">${i + 1}.</span>
-        <span class="col-num"><span class="highlight-number">${entry.number}</span></span>
+        <span class="col-num"><input type="text" class="highlight-number" value="${entry.number}" maxlength="${sec.digits}" onchange="updateNumber('${sec.id}',${i},this.value)"></span>
         <input type="number" class="form-control form-control-sm normal-input input-amount" value="${entry.amount}" min="1" onchange="updateAmount('${sec.id}',${i},this.value)">
-        <span class="col-rate">${currentRate.toFixed(2)}</span>
+        <span class="col-rate"><input type="number" class="form-control form-control-sm normal-input input-rate-edit" value="${currentRate.toFixed(2)}" step="0.01" min="0" onchange="updateRate('${sec.id}',${i},this.value)"></span>
         <span class="col-win">
           <input type="text" class="form-control form-control-sm normal-input" value="${winAmount}฿" readonly>
         </span>
@@ -158,6 +158,30 @@ function updateAmount(sectionId, index, val) {
   data[sectionId][index].amount = parseInt(val) || 1;
   saveData();
   render();
+}
+
+function updateNumber(sectionId, index, val) {
+  const sec = SECTIONS.find(s => s.id === sectionId);
+  val = val.trim();
+  if (val.length === sec.digits) {
+    data[sectionId][index].number = val;
+    saveData();
+    render();
+  } else {
+    alert(`กรุณากรอกเลขให้ครบ ${sec.digits} หลัก`);
+    render();
+  }
+}
+
+function updateRate(sectionId, index, val) {
+  const newRate = parseFloat(val);
+  if (!isNaN(newRate) && newRate > 0) {
+    data[sectionId][index].rate = newRate;
+    saveData();
+    render();
+  } else {
+    render();
+  }
 }
 
 // Initial render

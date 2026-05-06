@@ -120,10 +120,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   background: #28a745;
   width: 100%;
   height: 100%;
+  border: none;
   border-radius: 0;
+  outline: none;
+  cursor: text;
+}
+
+.highlight-number:focus {
+  box-shadow: inset 0 0 0 2px #fff;
 }
 
 .col-idx {
@@ -209,6 +217,25 @@ body {
 
 .entry-row .col-rate {
   font-family: Tahoma, sans-serif;
+}
+
+.input-rate-edit {
+  text-align: center;
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-family: Tahoma, sans-serif;
+  font-weight: 500;
+  font-size: 20px !important;
+  color: #000 !important;
+  padding: 0 !important;
+  height: auto !important;
+  cursor: text;
+}
+
+.input-rate-edit:focus {
+  outline: 1px dashed #999;
 }
 
 .input-amount {
