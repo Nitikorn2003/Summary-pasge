@@ -1,7 +1,7 @@
 // === Data & Config ===
 const SECTIONS = [
-  { id: 'three_top', title: 'สามตัวบน',   digits: 3, rate: 850, color: 'green', rowClass: '' },
-  { id: 'three_tod', title: 'สามตัวโต๊ด', digits: 3, rate: 120, color: 'orange', rowClass: 'red-bg' },
+  { id: 'three_top', title: 'สามตัวบน',   digits: 3, rate: 900, color: 'green', rowClass: '' },
+  { id: 'three_tod', title: 'สามตัวโต๊ด', digits: 3, rate: 150, color: 'orange', rowClass: 'red-bg' },
   { id: 'two_top',   title: 'สองตัวบน',   digits: 2, rate: 90,  color: 'green', rowClass: '' },
   { id: 'two_bot',   title: 'สองตัวล่าง', digits: 2, rate: 90,  color: 'orange', rowClass: 'red-bg' },
 ];
