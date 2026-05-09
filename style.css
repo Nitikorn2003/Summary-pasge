@@ -4,20 +4,16 @@ body {
   background: #3a3a3a;
   min-height: 100vh;
   padding: 16px 0;
-  /* เพิ่มพื้นที่รอบๆ กลับมานิดนึง */
-  font-size: 16px
+  font-size: 16px;
 }
 
 .container-custom {
   max-width: 1600px;
-  /* ลดลงมาเหลือ 1200px */
   width: 95%;
-  /* ให้ยืดหยุ่นตามหน้าจอ */
   margin: 0 auto;
-  /* จัดให้อยู่ตรงกลาง */
   background: #4a4a4a;
   box-shadow: 0 4px 20px rgba(0, 0, 0, .4);
-  overflow: hidden
+  overflow: hidden;
 }
 
 /* === Header Bar === */
@@ -30,52 +26,302 @@ body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
+/* === Add Panel (toggled by X button) === */
+.add-panel {
+  border-bottom: 3px solid #a67c00;
+}
+
+/* === Bet Type Selector (Grid) === */
+.bet-type-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.bet-btn {
+  display: flex;
+  padding: 0;
+  border: 1px solid lab(88.12% 0 -0.01);
+  border-radius: 4px;
+  overflow: hidden;
+  color: white;
+  font-family: 'Prompt', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  background: white;
+  opacity: 0.6;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.bet-btn.active {
+  opacity: 1;
+  border: 1px dashed #333;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.bet-btn .btn-name {
+  flex: 1;
+  padding: 6px 2px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.bet-btn .btn-val {
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bg-darkred { background: #6b0000; }
+.bg-lightred { background: #e53935; }
+.bg-red { background: #d32f2f; }
+.bg-blue { background: #1565c0; }
+.bg-lightblue { background: #42a5f5; color: #fff; }
+
+/* === Selected Tags Bar === */
+.selected-tags-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 24px;
+  align-items: center;
+}
+
+.selected-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  color: #fff;
+  font-family: 'Prompt', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+/* === Number Input Boxes === */
+.number-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.num-box {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #d4af37;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  background: white;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* === Numpad === */
+.numpad-wrapper {
+  display: flex;
+  gap: 6px;
+}
+
+.numpad-grid {
+  flex: 3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 42px);
+  gap: 4px;
+}
+
+.num-btn {
+  background: white;
+  border: 1px solid #b3d4fc;
+  border-radius: 4px;
+  color: #1976d2;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.num-btn:active {
+  background: #e3f2fd;
+}
+
+.num-btn.empty {
+  background: #e0e0e0;
+  border: none;
+}
+
+.numpad-actions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.action-btn {
+  flex: 1;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Prompt', sans-serif;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.btn-backspace {
+  background: linear-gradient(180deg, #d4af37 0%, #aa7c11 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-clear {
+  background: #343a40;
+}
+
+/* === Bottom Actions === */
+.btn-gold-action {
+  background: linear-gradient(180deg, #d4af37 0%, #aa7c11 100%);
+  border: 1px solid #8b6914;
+  border-radius: 4px;
+  color: #fff;
+  font-family: 'Prompt', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.btn-gold-action:active {
+  background: linear-gradient(180deg, #aa7c11 0%, #d4af37 100%);
+}
+/* === Preview (shows all selected types) === */
+.reverse-preview {
+  margin-top: 10px;
+  padding: 8px 0;
+  background: rgba(0,0,0,0.25);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.preview-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.preview-group:last-of-type {
+  border-bottom: none;
+}
+
+.preview-section-label {
+  flex: 0 0 auto;
+  min-width: 90px;
+  color: #ffdc73;
+  font-family: 'Prompt', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.preview-section-label.reverse-label {
+  color: #ff8a50;
+}
+
+.preview-nums-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.preview-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  padding: 3px 8px;
+  background: linear-gradient(135deg, #a67c00, #d4a017);
+  color: #ffffff;
+  font-family: 'Prompt', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  letter-spacing: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.preview-num.reverse-num {
+  background: linear-gradient(135deg, #b33a00, #e85d26);
+}
+
+.preview-total {
+  text-align: right;
+  padding: 4px 12px 2px;
+  color: #aaa;
+  font-size: 12px;
+  font-family: 'Prompt', sans-serif;
+}
+
+
+/* === Shake Animation === */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+
 /* === Section Header === */
 .section-header {
   background: #eeeaea;
   border-bottom: 1px solid #ddd;
-  padding: 4px 50px 4px 0; 
+  padding: 4px 50px 4px 0;
   font-size: 20px;
   color: #000000;
   font-weight: normal;
   display: grid;
-  grid-template-columns: 60px 75px 2fr 160px 2fr 40px; /* คืนค่า 6 คอลัมน์ให้ตรงกับแถวข้อมูล */
+  grid-template-columns: 60px 75px 2fr 160px 2fr 40px;
   column-gap: 0;
   align-items: center;
-  margin-top: 20px; /* เว้นระยะห่างก่อนขึ้นหมวดหมู่ใหม่ */
-
+  margin-top: 20px;
 }
 
 .section-header:first-of-type {
-  margin-top: 0; /* หมวดหมู่แรกสุดไม่ต้องเว้นระยะด้านบน */
+  margin-top: 8px;
 }
 
 .section-header .col-idx {
   font-weight: bold;
-  background: #eeeaea
+  background: #eeeaea;
 }
 
 .section-header .section-title {
-  grid-column: span 2; /* ใช้พื้นที่ช่องที่ 2 และ 3 ร่วมกัน */
+  grid-column: span 2;
   white-space: nowrap;
 }
 
 .section-title.green {
-  color: #b58900; /* กลับไปใช้สีทองเข้ม */
+  color: #b58900;
   font-size: 24px;
-  font-weight: normal; /* เปลี่ยนเป็นตัวธรรมดา */
-}
-
-.section-title.orange {
-  color: #b58900; /* กลับไปใช้สีทองเข้ม */
-  font-size: 24px;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .section-title.orange {
   color: #b58900;
   font-size: 24px;
-  font-weight: normal; /* เปลี่ยนเป็นตัวธรรมดา */
+  font-weight: normal;
 }
 
 .btn-add {
@@ -84,11 +330,8 @@ body {
   color: #fff;
   border-radius: 50%;
   width: 40px;
-  /* ใหญ่ขึ้น */
   height: 40px;
-  /* ใหญ่ขึ้น */
   font-size: 28px;
-  /* ใหญ่ขึ้น */
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -96,22 +339,26 @@ body {
 }
 
 .btn-add:hover {
-  background: #45a045
+  background: #45a045;
 }
 
 /* === Entry Rows === */
 .entry-row {
-  background: #dc948e; /* คืนสีแดง */
+  background: #dc948e; /* Pink default */
   border-bottom: 1px solid #ddd;
   display: grid;
   grid-template-columns: 60px 75px 2fr 160px 2fr 40px;
   column-gap: 0;
-  align-items: stretch; /* ให้ทุกช่องยืดเต็มความสูง */
+  align-items: stretch;
   min-height: 44px;
   padding-right: 50px;
 }
 
-/* ตัวอย่างสำหรับช่องตารางสีเขียว (เช่น 25, 43, 74) */
+.entry-row.white-bg {
+  background: #ffffffcd;
+}
+
+/* ตัวอย่างสำหรับช่องตารางสีเขียว */
 .highlight-number {
   font-family: Tahoma, sans-serif;
   font-weight: bold;
@@ -135,7 +382,7 @@ body {
 }
 
 .col-idx {
-  background: #c2c0c0; /* พื้นหลังสีเทา */
+  background: #c2c0c0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,18 +394,17 @@ body {
   width: 60px;
 }
 
-/* แยกส่วนหัวให้มีระยะห่างกับชื่อหมวดหมู่ และชิดขอบซ้าย */
+/* แยกส่วนหัวให้มีระยะห่างกับชื่อหมวดหมู่ */
 .section-header .col-idx {
   justify-content: flex-start;
   padding-left: 8px;
   font-size: 18px;
-  /* ใหญ่ขึ้น */
 }
 
 .section-title {
-  margin-left: 0; 
-  font-size: 20px; /* ลดขนาดนิดนึงเพื่อให้พอดีกับช่อง .col-num */
-  color: #b58900; 
+  margin-left: 0;
+  font-size: 20px;
+  color: #b58900;
   white-space: nowrap;
   display: block;
   font-weight: normal;
@@ -188,7 +434,6 @@ body {
   font-size: 20px;
   color: #000000;
   width: 160px;
-  /* ขยายให้กว้างขึ้นเพื่อไม่ให้เลขเบียด */
   text-align: center;
 }
 
@@ -197,22 +442,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px; /* ลดขนาดลงนิดนึง */
+  font-size: 22px;
   font-weight: normal;
   width: 100%;
   text-align: center;
-  white-space: nowrap; /* ห้ามตัดบรรทัด */
+  white-space: nowrap;
 }
 
 .section-header .col-win {
   display: flex;
-  font-size: 22px; /* ลดขนาดลงนิดนึง */
+  font-size: 22px;
   font-weight: normal;
-  grid-column: span 1; 
-  justify-content: flex-start; 
+  grid-column: span 1;
+  justify-content: flex-start;
   align-items: center;
-  padding-left: 10px; /* ตรงกับช่อง input ข้างล่าง */
-  white-space: nowrap; /* ห้ามตัดบรรทัด */
+  padding-left: 10px;
+  white-space: nowrap;
 }
 
 .entry-row .col-rate {
@@ -239,13 +484,13 @@ body {
 }
 
 .input-amount {
-  width: 100%; /* ให้เต็มช่อง Grid */
+  width: 100%;
   margin-left: 0 !important;
 }
 
 .col-win {
   font-weight: 500;
-  width: 100%; /* ให้เต็มช่อง Grid */
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -253,31 +498,27 @@ body {
 }
 
 .col-del {
-  width: 40px; /* ขยายความกว้างรองรับปุ่มที่ใหญ่ขึ้น */
+  width: 40px;
   text-align: center;
   display: flex;
   align-items: center;
-  justify-content: center; /* ปรับให้อยู่ตรงกลางช่อง */
-  margin-left: 10px; /* เพิ่มระยะห่างจากช่องข้างๆ */
+  justify-content: center;
+  margin-left: 10px;
 }
 
 input {
   font-family: Tahoma, sans-serif;
 }
 
-/* ตัวอย่างสำหรับช่องกรอกข้อความทั่วไป (เช่น 90.00, 170000฿) */
+/* ตัวอย่างสำหรับช่องกรอกข้อความทั่วไป */
 .normal-input {
   font-family: Tahoma, sans-serif;
-  font-weight: normal; /* เปลี่ยนเป็นตัวธรรมดา */
-  /* หนาขึ้น */
+  font-weight: normal;
   font-size: 20px !important;
-  /* ใหญ่ขึ้นเกือบ 2 เท่า */
   color: #000;
   border: 1px solid #999;
   background: #fff;
   height: 34px !important;
-  /* ขยายขนาดให้ใหญ่ขึ้น */
-  font-size: 20px !important;
   padding: 0 10px !important;
   margin: 2px 0;
 }
@@ -289,11 +530,8 @@ input {
   color: #72560f;
   border-radius: 4px;
   width: 30px;
-  /* ใหญ่ขึ้น 2 เท่า */
   height: 40px;
-  /* ใหญ่ขึ้น */
   font-size: 20px;
-  /* ใหญ่ขึ้น 2 เท่า */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -313,106 +551,21 @@ input {
 }
 
 .btn-del:hover {
-  filter: brightness(1.1)
+  filter: brightness(1.1);
 }
 
 .btn-del:active {
   filter: brightness(.95);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, .3)
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, .3);
 }
 
-/* === Bulk Add Modal Styles === */
-.bulk-section {
-  background: #fdfdfd;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 15px;
+/* === Remove Number Input Spinners === */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.bulk-section-label {
-  font-size: 13px;
-  color: #888;
-  border-bottom: 1px dashed #ddd;
-  padding-bottom: 4px;
-  margin-bottom: 10px;
-}
-
-.input-custom {
-  width: 100%;
-  height: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0 6px;
-  font-size: 14px;
-  text-align: center;
-  outline: none;
-  font-family: 'Outfit', sans-serif;
-  transition: border-color .2s;
-}
-
-.bulk-row {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
-  align-items: center;
-}
-
-.bulk-row input {
-  padding: 2px 4px;
-  font-size: 13px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
-
-.bulk-row .input-num {
-  width: 80px;
-}
-
-.bulk-row .input-amt {
-  width: 100px;
-}
-
-.bulk-row .input-rate {
-  width: 80px;
-}
-
-.btn-add-row {
-  background: #e7f5ea;
-  color: #28a745;
-  border: 1px solid #c3e6cb;
-  border-radius: 4px;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-add-row:hover {
-  background: #28a745;
-  color: #fff;
-}
-
-
-
-.btn-remove-row {
-  background: #fff5f5;
-  color: #dc3545;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.btn-remove-row:hover {
-  background: #dc3545;
-  color: #fff;
+input[type="number"] {
+  -moz-appearance: textfield;
 }
