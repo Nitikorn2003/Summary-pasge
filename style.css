@@ -26,7 +26,7 @@ body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-/* === Add Panel (toggled by X button) === */
+/* === Add Panel (Full Page) === */
 .add-panel {
   border-bottom: 3px solid #a67c00;
 }
@@ -568,4 +568,56 @@ input[type="number"]::-webkit-inner-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* === Fixed Bottom Quick Price === */
+.fixed-bottom-numpad {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1600px;
+  z-index: 1000;
+  border-top: 2px solid #d4af37 !important;
+}
+
+.quick-price-grid-v {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.numpad-grid.mini {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 32px);
+  gap: 4px;
+}
+
+.numpad-grid.mini .num-btn {
+  font-size: 14px;
+}
+
+.quick-price-btn {
+  background: #d1d1d1;
+  border: 1px solid #a3a3a3;
+  border-radius: 4px;
+  padding: 6px 0;
+  font-family: 'Prompt', sans-serif;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.1s;
+  font-size: 14px;
+}
+
+.quick-price-btn:active {
+  background: #bfbfbf;
+  transform: translateY(1px);
+}
+
+.quick-price-btn.wide {
+  grid-column: span 1;
+  margin-top: 0;
 }
