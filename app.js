@@ -199,6 +199,24 @@ function applyBulkPrice() {
   if (display) display.textContent = bulkPriceStr;
 }
 
+// === Keyboard Support ===
+document.addEventListener('keydown', (e) => {
+  // If we're typing in an input field, don't use global numpad logic
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+  const key = e.key;
+
+  if (key >= '0' && key <= '9') {
+    bulkPricePress(key);
+  } else if (key === 'Backspace') {
+    bulkPriceDelete();
+  } else if (key === 'Enter') {
+    bulkPriceConfirm();
+  } else if (key === 'Escape') {
+    bulkPriceClear();
+  }
+});
+
 // === Init ===
 document.addEventListener('DOMContentLoaded', () => {
   render();

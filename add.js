@@ -128,10 +128,23 @@ function numpadDelete() {
 }
 
 function numpadClearAll() {
+  const modal = document.getElementById('confirmModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeConfirmModal() {
+  const modal = document.getElementById('confirmModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function confirmClearAll() {
   currentNumberStr = '';
-  selectedTypes.clear();
-  selectedTypes.add('three_top');
+  // Clear all entries in the data object
+  SECTIONS.forEach(s => { data[s.id] = []; });
+  saveData();
   updateUI();
+  renderSidebar();
+  closeConfirmModal();
 }
 
 // Show selected types as tags
@@ -411,6 +424,26 @@ function shakeElement(el) {
 }
 
 // === Event Listeners ===
+// === Keyboard Support ===
+document.addEventListener('keydown', (e) => {
+  // If we're typing in an input field (like rate), don't use global numpad logic
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+  const key = e.key;
+
+  if (key >= '0' && key <= '9') {
+    numpadPress(key);
+  } else if (key === 'Backspace') {
+    numpadDelete();
+  } else if (key === 'Enter') {
+    // If digits are full, addEntry will be called by numpadPress already
+    // but we can call it here too for safety or manual confirm
+    addEntry();
+  } else if (key === 'Escape' || key === 'Delete') {
+    numpadClearAll();
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   // Initial UI update
   updateUI();
