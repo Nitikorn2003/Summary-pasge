@@ -11,7 +11,7 @@ const BET_TYPE_CONFIG = {
   'three_tod':     { digits: 3, label: '3ตัวโต๊ด', sections: ['three_tod'], reverse: false },
   'two_top':       { digits: 2, label: '2ตัวบน',   sections: ['two_top'],   reverse: false },
   'two_bot':       { digits: 2, label: '2ตัวล่าง', sections: ['two_bot'],   reverse: false },
-  'three_reverse': { digits: 3, label: '3ตัวกลับ', sections: ['three_top', 'three_tod'], reverse: true },
+  'three_reverse': { digits: 3, label: '3ตัวกลับ', sections: ['three_top'], reverse: true },
   'two_reverse':   { digits: 2, label: '2ตัวกลับ', sections: ['two_top', 'two_bot'],     reverse: true },
 };
 
