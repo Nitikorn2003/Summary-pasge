@@ -62,6 +62,14 @@ function toggleBetType(type) {
       selectedTypes.clear();
       currentNumberStr = '';
     }
+
+    // Exclusion logic: 3ตัวกลับ and 3ตัวโต๊ด cannot be together
+    if (type === 'three_tod' && selectedTypes.has('three_reverse')) {
+      selectedTypes.delete('three_reverse');
+    } else if (type === 'three_reverse' && selectedTypes.has('three_tod')) {
+      selectedTypes.delete('three_tod');
+    }
+
     selectedTypes.add(type);
   }
 
