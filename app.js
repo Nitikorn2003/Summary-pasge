@@ -1,10 +1,17 @@
 // === Data & Config ===
 const SECTIONS = [
-  { id: 'three_top', title: 'สามตัวบน', digits: 3, rate: 800, color: 'green', rowClass: '' },
-  { id: 'three_tod', title: 'สามตัวโต๊ด', digits: 3, rate: 100, color: 'orange', rowClass: 'red-bg' },
-  { id: 'two_top', title: 'สองตัวบน', digits: 2, rate: 80, color: 'green', rowClass: '' },
-  { id: 'two_bot', title: 'สองตัวล่าง', digits: 2, rate: 80, color: 'orange', rowClass: 'red-bg' },
+  { id: 'three_top', title: 'สามตัวบน', digits: 3, rate: 800, color: 'green', rowClass: 'bg-top-3' },
+  { id: 'three_tod', title: 'สามตัวโต๊ด', digits: 3, rate: 100, color: 'orange', rowClass: 'bg-tod-3' },
+  { id: 'two_top', title: 'สองตัวบน', digits: 2, rate: 80, color: 'green', rowClass: 'bg-top-2' },
+  { id: 'two_bot', title: 'สองตัวล่าง', digits: 2, rate: 80, color: 'orange', rowClass: 'bg-bot-2' },
 ];
+
+const WHITE_BG_RATES = {
+  three_top: 900,
+  three_tod: 150,
+  two_top: 90,
+  two_bot: 90
+};
 
 let data = {};
 let bulkPriceStr = ''; 
@@ -65,8 +72,11 @@ function render() {
       const currentRate = entry.rate || sec.rate;
       const winAmount = entry.amount * currentRate;
 
-      // Highlight if rate is different from default
-      const rowBgClass = currentRate == sec.rate ? 'white-bg' : '';
+      // Original price (amount 1 and specific white-bg rate) gets white background
+      // Changed price gets the section's default color (e.g., red-bg or pink)
+      const targetWhiteRate = WHITE_BG_RATES[sec.id] || sec.rate;
+      const isDefault = entry.amount == 1 && currentRate == targetWhiteRate;
+      const rowBgClass = isDefault ? 'white-bg' : (sec.rowClass || '');
 
       html += `
       <div class="entry-row ${rowBgClass}">

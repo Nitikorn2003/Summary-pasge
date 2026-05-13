@@ -1,9 +1,9 @@
 // === Data & Config (shared with index page via localStorage) ===
 const SECTIONS = [
-  { id: 'three_top', title: 'สามตัวบน',   digits: 3, rate: 800, color: 'green', rowClass: '' },
-  { id: 'three_tod', title: 'สามตัวโต๊ด', digits: 3, rate: 100, color: 'orange', rowClass: 'red-bg' },
-  { id: 'two_top',   title: 'สองตัวบน',   digits: 2, rate: 80,  color: 'green', rowClass: '' },
-  { id: 'two_bot',   title: 'สองตัวล่าง', digits: 2, rate: 80,  color: 'orange', rowClass: 'red-bg' },
+  { id: 'three_top', title: 'สามตัวบน',   digits: 3, rate: 800, color: 'green', rowClass: 'bg-top-3' },
+  { id: 'three_tod', title: 'สามตัวโต๊ด', digits: 3, rate: 100, color: 'orange', rowClass: 'bg-tod-3' },
+  { id: 'two_top',   title: 'สองตัวบน',   digits: 2, rate: 80,  color: 'green', rowClass: 'bg-top-2' },
+  { id: 'two_bot',   title: 'สองตัวล่าง', digits: 2, rate: 80,  color: 'orange', rowClass: 'bg-bot-2' },
 ];
 
 const BET_TYPE_CONFIG = {
@@ -110,6 +110,13 @@ function numpadPress(num) {
   if (currentNumberStr.length < digits) {
     currentNumberStr += num;
     updateNumberDisplay();
+
+    // Auto-save when digits are full
+    if (currentNumberStr.length === digits) {
+      setTimeout(() => {
+        addEntry();
+      }, 100); // Small delay for visual feedback
+    }
   }
 }
 
@@ -132,15 +139,28 @@ function updateSelectedTags() {
   const container = document.getElementById('selectedTags');
   if (!container) return;
   container.innerHTML = '';
+  
+  // Also update a label above the number boxes for better context
+  const contextLabel = document.querySelector('.number-input-context');
+  let labelText = '';
+
   selectedTypes.forEach(type => {
     const config = BET_TYPE_CONFIG[type];
     const isReverse = config.reverse;
     const colorClass = config.digits === 2 ? 'bg-blue' : 'bg-red';
+    
     const tag = document.createElement('span');
     tag.className = `selected-tag ${colorClass} ${isReverse ? 'reverse-tag' : ''}`;
     tag.textContent = config.label;
     container.appendChild(tag);
+
+    labelText += (labelText ? ' + ' : '') + config.label;
   });
+
+  const displayLabel = document.getElementById('currentBetTypeLabel');
+  if (displayLabel) {
+    displayLabel.textContent = labelText || 'กรุณาเลือกประเภท';
+  }
 }
 
 // === Permutation Generator ===
@@ -165,11 +185,14 @@ function showPreview() {
   const val = currentNumberStr;
   const digits = getSelectedDigits() || 3;
 
-  if (val.length === 0 || val.length !== digits) {
+  if (val.length === 0) {
     preview.style.display = 'none';
     preview.innerHTML = '';
     return;
   }
+
+  // Create a version with placeholders for display
+  const displayVal = val.padEnd(digits, '_');
 
   let html = '';
   let totalCount = 0;
@@ -179,29 +202,42 @@ function showPreview() {
     const config = BET_TYPE_CONFIG[type];
 
     if (config.reverse) {
-      const perms = getPermutations(val);
-      config.sections.forEach(secId => {
-        const sec = SECTIONS.find(s => s.id === secId);
-        const uniquePerms = perms.filter(p => {
-          const key = `${secId}:${p}`;
-          if (previewKeys.has(key)) return false;
-          previewKeys.add(key);
-          return true;
+      // Only show permutations if the number is complete, otherwise show placeholder
+      if (val.length === digits) {
+        const perms = getPermutations(val);
+        config.sections.forEach(secId => {
+          const sec = SECTIONS.find(s => s.id === secId);
+          const uniquePerms = perms.filter(p => {
+            const key = `${secId}:${p}`;
+            if (previewKeys.has(key)) return false;
+            previewKeys.add(key);
+            return true;
+          });
+          if (uniquePerms.length > 0) {
+            totalCount += uniquePerms.length;
+            html += `
+              <div class="preview-group">
+                <span class="preview-section-label reverse-label">${escapeHTML(config.label)} → ${escapeHTML(sec.title)}</span>
+                <div class="preview-nums-wrap">
+                  ${uniquePerms.map(p => `<span class="preview-num reverse-num">${escapeHTML(p)}</span>`).join('')}
+                </div>
+              </div>`;
+          }
         });
-        if (uniquePerms.length > 0) {
-          totalCount += uniquePerms.length;
-          html += `
-            <div class="preview-group">
-              <span class="preview-section-label reverse-label">${escapeHTML(config.label)} → ${escapeHTML(sec.title)}</span>
-              <div class="preview-nums-wrap">
-                ${uniquePerms.map(p => `<span class="preview-num reverse-num">${escapeHTML(p)}</span>`).join('')}
-              </div>
-            </div>`;
-        }
-      });
+      } else {
+        // Partial reverse preview
+        html += `
+          <div class="preview-group">
+            <span class="preview-section-label reverse-label">${escapeHTML(config.label)}</span>
+            <div class="preview-nums-wrap">
+              <span class="preview-num reverse-num">${escapeHTML(displayVal)}</span>
+              <span class="ms-2 text-muted" style="font-size: 10px;">(รอครบ ${digits} หลักเพื่อสลับเลข)</span>
+            </div>
+          </div>`;
+      }
     } else {
       const secId = config.sections[0];
-      const key = `${secId}:${val}`;
+      const key = `${secId}:${displayVal}`;
       if (!previewKeys.has(key)) {
         previewKeys.add(key);
         totalCount += 1;
@@ -209,7 +245,7 @@ function showPreview() {
           <div class="preview-group">
             <span class="preview-section-label">${escapeHTML(config.label)}</span>
             <div class="preview-nums-wrap">
-              <span class="preview-num">${escapeHTML(val)}</span>
+              <span class="preview-num">${escapeHTML(displayVal)}</span>
             </div>
           </div>`;
       }
@@ -276,7 +312,7 @@ function addEntry() {
 
   saveData();
 
-  // Show added feedback then redirect to main page
+  // Show added feedback
   showAddedFeedback(totalAdded);
 
   // Reset inputs
@@ -284,17 +320,25 @@ function addEntry() {
   updateNumberDisplay();
   if (rateInput) rateInput.value = '';
 
-  // Hide reverse preview
+  // Show success feedback in preview area instead of just hiding it
   const preview = document.getElementById('reversePreview');
   if (preview) {
-    preview.style.display = 'none';
-    preview.innerHTML = '';
+    preview.innerHTML = `
+      <div class="p-2 text-center text-success fw-bold" style="background: rgba(40, 167, 69, 0.1); border-radius: 4px;">
+        <i class="bi bi-check-circle-fill"></i> บันทึกสำเร็จ: ${num}
+      </div>`;
+    preview.style.display = 'block';
+    // Clear after a moment or when user starts typing again
+    setTimeout(() => {
+      if (currentNumberStr === '') {
+        preview.style.display = 'none';
+        preview.innerHTML = '';
+      }
+    }, 1500);
   }
 
-  // Navigate to main page after brief feedback
-  setTimeout(() => {
-    window.location.href = 'index.html';
-  }, 500);
+  // Refresh Sidebar instead of redirecting
+  renderSidebar();
 }
 
 // Brief green flash feedback
@@ -312,6 +356,53 @@ function showAddedFeedback(count) {
   }, 600);
 }
 
+// Render sidebar list
+function renderSidebar() {
+  const listEl = document.getElementById('sidebarList');
+  const countEl = document.getElementById('sidebarCount');
+  if (!listEl) return;
+
+  listEl.innerHTML = '';
+  let totalCount = 0;
+
+  SECTIONS.forEach(sec => {
+    const entries = data[sec.id];
+    if (entries.length === 0) return;
+
+    // Header for group
+    const header = document.createElement('div');
+    header.className = 'sidebar-group-header';
+    header.textContent = sec.title;
+    listEl.appendChild(header);
+
+    entries.forEach((entry, idx) => {
+      totalCount++;
+      const item = document.createElement('div');
+      item.className = 'sidebar-entry';
+      item.innerHTML = `
+        <div class="d-flex flex-column">
+          <span class="sidebar-num">${escapeHTML(entry.number)}</span>
+          <span class="sidebar-meta">${entry.amount}฿ x${entry.rate}</span>
+        </div>
+        <button class="btn btn-sm text-danger p-0 border-0" onclick="deleteSidebarEntry('${sec.id}', ${idx})" style="font-size: 16px;">
+          <i class="bi bi-x-circle-fill"></i>
+        </button>
+      `;
+      listEl.appendChild(item);
+    });
+  });
+
+  if (countEl) countEl.textContent = totalCount + ' รายการ';
+}
+
+function deleteSidebarEntry(sectionId, index) {
+  if (data[sectionId]) {
+    data[sectionId].splice(index, 1);
+    saveData();
+    renderSidebar();
+  }
+}
+
 // Shake animation for invalid input
 function shakeElement(el) {
   if (!el) return;
@@ -323,4 +414,5 @@ function shakeElement(el) {
 document.addEventListener('DOMContentLoaded', () => {
   // Initial UI update
   updateUI();
+  renderSidebar();
 });
