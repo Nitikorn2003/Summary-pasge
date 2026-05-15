@@ -75,7 +75,8 @@ function render() {
       // Original price (amount 1 and specific white-bg rate) gets white background
       // Changed price gets the section's default color (e.g., red-bg or pink)
       const targetWhiteRate = WHITE_BG_RATES[sec.id] || sec.rate;
-      const isDefault = entry.amount == 1 && currentRate == targetWhiteRate;
+      // White background if rate matches the target rate, regardless of amount
+      const isDefault = currentRate == targetWhiteRate;
       const rowBgClass = isDefault ? 'white-bg' : (sec.rowClass || '');
 
       html += `
