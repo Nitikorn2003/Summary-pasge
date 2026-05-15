@@ -24,25 +24,50 @@
     </div>
 
     <!-- Sections (display area) -->
-    <div id="sectionsWrap" style="margin-bottom: 250px;"></div>
-
-    <!-- Bottom Bulk Price Control -->
-    <div class="fixed-bottom-numpad p-2 bg-light border-top shadow-lg">
-      <div class="text-center mb-1">
-        <div style="font-size: 11px; color: #666; font-weight: bold;">ระบุราคาด่วน</div>
-        <div id="bulkPriceDisplay" class="fw-bold text-primary" style="font-size: 18px; height: 24px;"></div>
+    <div id="sectionsWrap" style="margin-bottom: 300px;"></div>
+ 
+    <!-- Fixed Bottom Controls -->
+    <div class="fixed-bottom-numpad border-top shadow-lg">
+      <!-- Top Row: Bulk Input & Quick Buttons -->
+      <div class="bulk-price-section">
+        <div class="bulk-left">
+          <div class="bulk-title">ราคา"เท่ากัน"ทั้งหมด</div>
+          <div class="bulk-input-group">
+            <input type="number" class="bulk-input" id="bulkInput" placeholder="ใส่ราคา" onkeydown="if(event.key==='Enter') applyBulkInput()">
+            <button class="bulk-add-btn" onclick="applyBulkInput()"><i class="bi bi-plus"></i></button>
+          </div>
+        </div>
+        <div class="bulk-right">
+          <div class="quick-price-grid-custom">
+            <button class="quick-price-btn" onclick="setBulkPrice(5)">5 ฿</button>
+            <button class="quick-price-btn" onclick="setBulkPrice(10)">10 ฿</button>
+            <button class="quick-price-btn" onclick="setBulkPrice(20)">20 ฿</button>
+            <button class="quick-price-btn" onclick="setBulkPrice(50)">50 ฿</button>
+            <button class="quick-price-btn btn-wide" onclick="setBulkPrice(100)">100 ฿</button>
+          </div>
+        </div>
       </div>
 
-      <div class="pyramid-container">
-        <div class="pyramid-row row-top">
-          <button class="quick-price-btn" onclick="setBulkPrice(5)">5 ฿</button>
-          <button class="quick-price-btn" onclick="setBulkPrice(10)">10 ฿</button>
+      <!-- Middle Row: Summary Bar -->
+      <div class="summary-bar">
+        <div class="credit-box">
+          <div class="summary-label">ยอดเครดิตคงเหลือ</div>
+          <div class="summary-value" id="creditBalance">0 B</div>
         </div>
-        <div class="pyramid-row row-bottom">
-          <button class="quick-price-btn" onclick="setBulkPrice(20)">20 ฿</button>
-          <button class="quick-price-btn" onclick="setBulkPrice(50)">50 ฿</button>
-          <button class="quick-price-btn" onclick="setBulkPrice(100)">100 ฿</button>
+        <div class="total-box">
+          <div class="summary-label">รวมยอดแทง</div>
+          <div class="summary-value" id="totalBetAmount">0</div>
         </div>
+      </div>
+
+      <!-- Bottom Row: Action Buttons -->
+      <div class="action-btns-container">
+        <button class="btn-cancel-all">
+          <i class="bi bi-slash-circle"></i> ยกเลิกทั้งหมด
+        </button>
+        <button class="btn-submit-bet">
+          <i class="bi bi-check2-circle"></i> ส่งโพย
+        </button>
       </div>
     </div>
   </div>

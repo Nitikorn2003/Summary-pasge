@@ -98,6 +98,19 @@ function render() {
 
   const totalEl = document.getElementById('totalCount');
   if (totalEl) totalEl.textContent = totalItems + ' รายการ';
+
+  updateTotalBetDisplay();
+}
+
+function updateTotalBetDisplay() {
+  let totalBet = 0;
+  SECTIONS.forEach(sec => {
+    data[sec.id].forEach(entry => {
+      totalBet += Number(entry.amount) || 0;
+    });
+  });
+  const totalBetEl = document.getElementById('totalBetAmount');
+  if (totalBetEl) totalBetEl.textContent = totalBet.toLocaleString();
 }
 
 // === CRUD ===
@@ -197,6 +210,87 @@ function bulkPriceConfirm() {
 function applyBulkPrice() {
   const display = document.getElementById('bulkPriceDisplay');
   if (display) display.textContent = bulkPriceStr;
+}
+
+// === Duplicate logic ===
+function checkDuplicates() {
+  let dupCount = 0;
+  SECTIONS.forEach(sec => {
+    const numbers = data[sec.id].map(e => e.number);
+    const unique = new Set(numbers);
+    dupCount += (numbers.length - unique.size);
+  });
+
+  if (dupCount > 0) {
+    alert(`พบเลขซ้ำทั้งหมด ${dupCount} รายการ`);
+  } else {
+    alert('ไม่พบเลขซ้ำ');
+  }
+}
+
+function cutDuplicates() {
+  let totalRemoved = 0;
+  SECTIONS.forEach(sec => {
+    const seen = new Set();
+    const originalLength = data[sec.id].length;
+    data[sec.id] = data[sec.id].filter(entry => {
+      if (seen.has(entry.number)) {
+        return false;
+      }
+      seen.add(entry.number);
+      return true;
+    });
+    totalRemoved += (originalLength - data[sec.id].length);
+  });
+
+  if (totalRemoved > 0) {
+    saveData();
+    render();
+    alert(`ตัดเลขซ้ำออกเรียบร้อยแล้ว ${totalRemoved} รายการ`);
+  } else {
+    alert('ไม่พบเลขซ้ำให้ตัด');
+  }
+}
+
+// === Bulk Input logic ===
+function applyBulkInput() {
+  const input = document.getElementById('bulkInput');
+  const val = parseInt(input.value);
+  if (!isNaN(val) && val > 0) {
+    setBulkPrice(val);
+    input.value = '';
+  }
+}
+
+// === Bottom Actions ===
+function clearAllEntries() {
+  if (confirm('คุณต้องการยกเลิกรายการแทงทั้งหมดใช่หรือไม่?')) {
+    SECTIONS.forEach(sec => {
+      data[sec.id] = [];
+    });
+    saveData();
+    render();
+  }
+}
+
+function submitBets() {
+  let totalBet = 0;
+  SECTIONS.forEach(sec => {
+    data[sec.id].forEach(entry => {
+      totalBet += Number(entry.amount) || 0;
+    });
+  });
+  
+  if (totalBet === 0) {
+    alert('กรุณาระบุราคาก่อนส่งโพย');
+    return;
+  }
+  
+  alert('ส่งโพยเรียบร้อยแล้ว ยอดรวม: ' + totalBet.toLocaleString() + ' ฿');
+  // Optional: clear after submit
+  // SECTIONS.forEach(sec => { data[sec.id] = []; });
+  // saveData();
+  // render();
 }
 
 // === Keyboard Support ===
