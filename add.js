@@ -219,10 +219,24 @@ function showPreview() {
   let totalCount = 0;
   const previewKeys = new Set();
 
+  const isTwoReverse = selectedTypes.has('two_reverse');
+  const isThreeReverse = selectedTypes.has('three_reverse');
+  const normalTypes = Array.from(selectedTypes).filter(t => !BET_TYPE_CONFIG[t].reverse);
+
   selectedTypes.forEach(type => {
     const config = BET_TYPE_CONFIG[type];
 
+    // Skip reverse-only types if there's a normal type for the same digit count
     if (config.reverse) {
+      const hasNormalSameDigits = normalTypes.some(nt => BET_TYPE_CONFIG[nt].digits === config.digits);
+      if (hasNormalSameDigits) return;
+    }
+
+    const needsReverse = config.reverse || 
+                        (config.digits === 2 && isTwoReverse) || 
+                        (config.digits === 3 && isThreeReverse);
+
+    if (needsReverse) {
       // Only show permutations if the number is complete, otherwise show placeholder
       if (val.length === digits) {
         const perms = getPermutations(val);
@@ -295,10 +309,24 @@ function addEntry() {
   let totalAdded = 0;
   const addedKeys = new Set();
 
+  const isTwoReverse = selectedTypes.has('two_reverse');
+  const isThreeReverse = selectedTypes.has('three_reverse');
+  const normalTypes = Array.from(selectedTypes).filter(t => !BET_TYPE_CONFIG[t].reverse);
+
   selectedTypes.forEach(type => {
     const config = BET_TYPE_CONFIG[type];
 
+    // Skip reverse-only types if there's a normal type for the same digit count
     if (config.reverse) {
+      const hasNormalSameDigits = normalTypes.some(nt => BET_TYPE_CONFIG[nt].digits === config.digits);
+      if (hasNormalSameDigits) return;
+    }
+
+    const needsReverse = config.reverse || 
+                        (config.digits === 2 && isTwoReverse) || 
+                        (config.digits === 3 && isThreeReverse);
+
+    if (needsReverse) {
       const perms = getPermutations(num);
       config.sections.forEach(secId => {
         const sec = SECTIONS.find(s => s.id === secId);
